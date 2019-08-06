@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import Invoice from './Invoice/Invoice.js';
 import SpecsList from './SpecsList/SpecsList.js';
+import Header from './header/header.js'
 
 export default class App extends Component {
   constructor(props){
     super(props);
+    this.updateFeature = this.updateFeature.bind(this);
     this.state = {
       selected: {
         Processor: {
@@ -28,24 +30,55 @@ export default class App extends Component {
     }
   }
 
-  render(){
+    updateFeature(feature, newValue) {
+      console.log('this.state.selected', this.state.selected);
+      const selected = this.state.selected;
+      selected[feature] = newValue;
+      console.log('selected', selected);
+      console.log(feature, newValue);
+      this.setState({
+        selected
+      });
+    }
+
+  render() {
     return (
-      <div className="App">
+      <div>
         <header>
-          <h1>ELF Computing</h1>
-          <h3>Laptops</h3>
-          <h5>Customize your laptop</h5>  
+          <Header />
         </header>      
         <main>
           <section className="main__form">
-            <h3>TECH SPECS AND CUSTOMIZATIONS</h3>
-            <SpecsList /> 
+            <SpecsList 
+              features={this.props.features}
+              selected={this.state.selected}
+              updateFeature={this.updateFeature}
+            /> 
           </section>
           <section className="main__summary">
             <h3>NEW GREENLEAF 2018</h3>
-            <Invoice />
+            <Invoice 
+              selected={this.state.selected}
+            />
           </section>
         </main>
       </div>
     );
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
